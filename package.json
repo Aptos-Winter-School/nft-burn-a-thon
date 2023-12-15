@@ -1,0 +1,11 @@
+{
+  "name": "nft-burn-a-thon",
+  "version": "1.0.0",
+  "description": "A live event where a large number of NFTs are burned in a short period to showcase the network's throughput capabilities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
