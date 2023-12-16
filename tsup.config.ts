@@ -18,7 +18,7 @@ const DEFAULT_CONFIG: Options = {
   skipNodeModulesBundle: true,
   sourcemap: true,
   splitting: true,
-  target: "es2020",
+  target: "esnext",
 };
 
 // ESM config
