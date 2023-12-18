@@ -9,6 +9,7 @@
     "_build:esm": "tsup simple_digital_asset.ts src/index.ts --platform node --format esm --dts --out-dir dist",
     "simple_digital_asset": "pnpm run build && ts-node --esm dist/simple_digital_asset.js",
     "server": "pnpm run build && ts-node --esm dist/src/index.js",
+    "start": "pnpm run server",
     "test": "run-s build simple_digital_asset"
   },
   "keywords": [],
