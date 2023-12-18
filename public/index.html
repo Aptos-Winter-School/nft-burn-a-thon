@@ -42,23 +42,26 @@
       }
     }
 
+    const connectWallet = async () => {
+      wallet.connect();
+    }
+
     const disconnectWallet = async () => {
       wallet.disconnect();
     }
 
     document.getElementById('connect-wallet').onclick = async function () {
-      try {
-        wallet = await window.aptos;
-        walletAddress = (await wallet.account()).address;
-        if (wallet == undefined && walletAddress == undefined) {
-          toggleWalletAddressText(walletAddress);
-          toggleWalletText('Disconnect');
-        } else {
-          await disconnectWallet();
-          toggleWalletAddressText('');
-          toggleWalletText('Connect');
-        }
-      } catch (e) { console.error(e) }
+      wallet = window.aptos;
+      await connectWallet();
+      walletAddress = (await wallet.account()).address;
+      if (wallet !== undefined && walletAddress !== undefined) {
+        toggleWalletAddressText(walletAddress);
+        toggleWalletText('Disconnect');
+      } else {
+        await disconnectWallet();
+        toggleWalletAddressText('');
+        toggleWalletText('Connect');
+      }
     }
   </script>
 </body>
