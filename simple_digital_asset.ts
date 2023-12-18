@@ -118,13 +118,18 @@ const burn_nft = async () => {
   console.log("Time to burn all the NFTs Alice is holding")
 
   for (let i = 0; i < alicesDigitalAsset.length; i++) {
-    let status = await aptos.burnDigitalAssetTransaction({
+    let txn = await aptos.burnDigitalAssetTransaction({
       creator: alice,
       digitalAssetAddress: alicesDigitalAsset[i].token_data_id,
     })
-    console.log(status)
+    committedTxn = await aptos.signAndSubmitTransaction({ signer: alice, transaction: txn });
+    pendingTxn = await aptos.waitForTransaction({ transactionHash: committedTxn.hash });
   }
-  console.log(`Alice's digital assets balance: ${alicesDigitalAsset.length}`);
+  const alicesDigitalAssetAfterBurn = await aptos.getOwnedDigitalAssets({
+    ownerAddress: alice.accountAddress,
+    minimumLedgerVersion: BigInt(pendingTxn.version),
+  });
+  console.log(`Alice's digital assets balance: ${alicesDigitalAssetAfterBurn.length}`);
 }
 
 await mint_nft();
