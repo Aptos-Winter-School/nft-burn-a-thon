@@ -3,7 +3,6 @@
 
 import "dotenv";
 import { Account, Aptos, AptosConfig, Network, NetworkToNetworkName } from "@aptos-labs/ts-sdk";
-import { stat } from "fs";
 
 const INITIAL_BALANCE = 100_000_000;
 
