@@ -52,15 +52,15 @@
 
     document.getElementById('connect-wallet').onclick = async function () {
       wallet = window.aptos;
-      await connectWallet();
-      walletAddress = (await wallet.account()).address;
-      if (wallet !== undefined && walletAddress !== undefined) {
-        toggleWalletAddressText(walletAddress);
-        toggleWalletText('Disconnect');
-      } else {
+      if (!window.aptos.isConnected()) {
         await disconnectWallet();
         toggleWalletAddressText('');
         toggleWalletText('Connect');
+      } else {
+        await connectWallet();
+        walletAddress = (await wallet.account()).address;
+        toggleWalletAddressText(walletAddress);
+        toggleWalletText('Disconnect');
       }
     }
   </script>
