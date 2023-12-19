@@ -13,19 +13,13 @@ const aptos = new Aptos(config);
 
 // Create Alice and Bob accounts
 const alice = Account.generate();
-const bob = Account.generate();
 
 console.log("=== Addresses ===\n");
 console.log(`Alice's address is: ${alice.accountAddress}`);
-console.log(`Bob's address is: ${bob.accountAddress}`);
 
 // Fund and create the accounts
 await aptos.faucet.fundAccount({
   accountAddress: alice.accountAddress,
-  amount: INITIAL_BALANCE,
-});
-await aptos.faucet.fundAccount({
-  accountAddress: bob.accountAddress,
   amount: INITIAL_BALANCE,
 });
 
@@ -82,32 +76,9 @@ const mint_nft = async () => {
 
     console.log(`Alice's digital asset: ${JSON.stringify(alicesDigitalAsset[0], null, 4)}`);
   }
-
-  // console.log("\n=== Transfer the digital asset to Bob ===\n");
-
-  //   const transferTransaction = await aptos.transferDigitalAssetTransaction({
-  //     sender: alice,
-  //     digitalAssetAddress: alicesDigitalAsset[0].token_data_id,
-  //     recipient: bob.accountAddress,
-  //   });
-  //   committedTxn = await aptos.signAndSubmitTransaction({ signer: alice, transaction: transferTransaction });
-  //   pendingTxn = await aptos.waitForTransaction({ transactionHash: committedTxn.hash });
-
-  //   const alicesDigitalAssetsAfter = await aptos.getOwnedDigitalAssets({
-  //     ownerAddress: alice.accountAddress,
-  //     minimumLedgerVersion: BigInt(pendingTxn.version),
-  //   });
-  //   console.log(`Alices's digital assets balance: ${alicesDigitalAssetsAfter.length}`);
-
-  //   const bobDigitalAssetsAfter = await aptos.getOwnedDigitalAssets({
-  //     ownerAddress: bob.accountAddress,
-  //     minimumLedgerVersion: BigInt(pendingTxn.version),
-  //   });
-  //   console.log(`Bob's digital assets balance: ${bobDigitalAssetsAfter.length}`);
-};
+}
 
 const burn_nft = async () => {
-  console.log("Hello World")
   const alicesDigitalAsset = await aptos.getOwnedDigitalAssets({
     ownerAddress: alice.accountAddress,
     minimumLedgerVersion: BigInt(pendingTxn.version),

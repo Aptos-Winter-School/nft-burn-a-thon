@@ -16,15 +16,44 @@
       <br />
       <button id="connect-wallet" class="btn btn-primary"><span id="connect-wallet-btn">Connect Wallet</span></button>
     </div>
+    <div class="mint-nft-container">
+      <div class="mb-3">
+        <h2>Mint NFT collection</h2>
+      </div>
+      <div class="mb-3">
+        <label for="collection-name" class="form-label">Collection Name</label>
+        <input type="text" class="form-control" id="collection-name" placeholder="BAYC">
+      </div>
+      <div class="mb-3">
+        <label for="collection-description" class="form-label">Collection Description</label>
+        <input type="text" class="form-control" id="collection-description" placeholder="This is BAYC...">
+      </div>
+      <div class="mb-3">
+        <label for="collection-uri" class="form-label">Collection URI</label>
+        <input type="text" class="form-control" id="collection-uri" placeholder="https://aptos.dev">
+      </div>
+      <div class="mb-3">
+        <label for="total-nft-mint" class="form-label">Total NFT Mint</label>
+        <input type="number" class="form-control" id="total-nft-mint" placeholder="10">
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-primary" id="mint-nft-btn">Mint</button>
+      </div>
+    </div>
+    <div class="burn-nft-container">
+      <button id="burn-nft-btn" class="btn btn-danger">BURN NFT</button>
+    </div>
   </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@aptos-labs/ts-sdk/dist/browser/index.global.js" />
   <script type="text/javascript">
 
     let wallet;
     let walletAddress;
+    const aptos = new Aptos();
 
     const toggleWalletText = (text) => {
       if (wallet) {
@@ -62,6 +91,35 @@
         toggleWalletAddressText(walletAddress);
         toggleWalletText('Disconnect');
       }
+    }
+
+    document.getElementById('mint-nft-btn').onclick = async function () {
+      let totalNFTs = parseInt(document.getElementById('total-nft-mint').value, 10);
+      let collectionName = document.getElementById('collection-name').value;
+      let collectionDescription = document.getElementById('collection-description').value;
+      let collectionURI = document.getElementById('collection-uri').value;
+      for (let i = 0; i < totalNFTs; i++) {
+        let mintTokenTransaction = await aptos.mintDigitalAssetTransaction({
+          creator: wallet.account,
+          collection: collectionName,
+          description: collectionDescription,
+          name: collectionName + i.toString(),
+          uri: collectionURI + '/' + i.toString(),
+        });
+
+        committedTxn = await aptos.signAndSubmitTransaction({ signer: alice, transaction: mintTokenTransaction });
+        pendingTxn = await aptos.waitForTransaction({ transactionHash: committedTxn.hash });
+
+        let myDigitalAsset = aptos.getOwnedDigitalAssets({
+          ownerAddress: wallet.address,
+          minimumLedgerVersion: BigInt(pendingTxn.version),
+        });
+        console.log(`My digital assets balance: ${myDigitalAsset.length}`);
+      }
+    }
+
+    document.getElementById('burn-nft-btn').onclick = async () => {
+
     }
   </script>
 </body>
