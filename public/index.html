@@ -48,12 +48,12 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@aptos-labs/ts-sdk/dist/browser/index.global.js" />
+  <script src="https://unpkg.com/@aptos-labs/ts-sdk/dist/browser/index.global.js"></script>
   <script type="text/javascript">
 
     let wallet;
     let walletAddress;
-    const aptos = new Aptos();
+    let aptos;
 
     const toggleWalletText = (text) => {
       if (wallet) {
@@ -81,6 +81,7 @@
 
     document.getElementById('connect-wallet').onclick = async function () {
       wallet = window.aptos;
+      aptos = window.aptosSDK;
       if (!window.aptos.isConnected()) {
         await disconnectWallet();
         toggleWalletAddressText('');
@@ -99,7 +100,7 @@
       let collectionDescription = document.getElementById('collection-description').value;
       let collectionURI = document.getElementById('collection-uri').value;
       for (let i = 0; i < totalNFTs; i++) {
-        let mintTokenTransaction = await aptos.mintDigitalAssetTransaction({
+        let mintTokenTransaction = await aptos.aptos.mintDigitalAssetTransaction({
           creator: wallet.account,
           collection: collectionName,
           description: collectionDescription,
@@ -119,7 +120,7 @@
     }
 
     document.getElementById('burn-nft-btn').onclick = async () => {
-
+      console.log("time to burn em");
     }
   </script>
 </body>

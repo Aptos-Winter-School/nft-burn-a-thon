@@ -54,9 +54,9 @@ const tokenURI = "aptos.dev/asset";
 
 const mint_nft = async () => {
 
-  console.log("\n=== Alice Mints 100 digital asset ===\n");
+  console.log("\n=== Alice Mints 10 digital asset ===\n");
 
-  for (let i = 0; i <= 10; i++) {
+  for (let i = 0; i < 10; i++) {
     let mintTokenTransaction = await aptos.mintDigitalAssetTransaction({
       creator: alice,
       collection: collectionName,
@@ -94,6 +94,7 @@ const burn_nft = async () => {
     })
     committedTxn = await aptos.signAndSubmitTransaction({ signer: alice, transaction: txn });
     pendingTxn = await aptos.waitForTransaction({ transactionHash: committedTxn.hash });
+    console.log(pendingTxn);
   }
   const alicesDigitalAssetAfterBurn = await aptos.getOwnedDigitalAssets({
     ownerAddress: alice.accountAddress,
